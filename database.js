@@ -13,7 +13,6 @@ const criarBanco = async () => {
             nome TEXT NOT NULL,
             idade INTEGER,
             descricao TEXT,
-            foto TEXT,
             ultima_localizacao TEXT,
             data_desaparecimento TEXT NOT NULL,
             status TEXT DEFAULT 'desaparecido'
@@ -35,10 +34,7 @@ const criarBanco = async () => {
             desaparecido_id INTEGER,
             solicitante_id INTEGER,
             descricao_caso TEXT,
-            data_registro TEXT,
-
-                FOREIGN KEY (desaparecido_id) REFERENCES desaparecidos(id),
-                FOREIGN KEY (solicitante_id) REFERENCES solicitantes(id)
+            data_registro TEXT
         )
         `);
 
@@ -49,13 +45,13 @@ const criarBanco = async () => {
             descricao TEXT,
             localizacao TEXT,
             data_avistamento TEXT,
-            contato TEXT,
-
-            FOREIGN KEY (desaparecido_id) REFERENCES desaparecidos(id)
+            contato TEXT
         )
         `);
 
         console.log("Banco conectado");
+
+        return db;
 };
 
 module.exports = { criarBanco };
