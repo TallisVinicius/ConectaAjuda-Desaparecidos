@@ -13,13 +13,41 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send(`
-        <body>
-            <h1>Teste</h1>
+        <body style="font-family: Arial; padding: 20px;">
+            <h1>🚨 API de Desaparecidos</h1>
+
+            <p>Esta API foi desenvolvida para registrar e consultar pessoas desaparecidas e possíveis avistamentos.</p>
+
+            <h2>📌 Rotas disponíveis:</h2>
+
+            <h3>👤 Desaparecidos</h3>
+            <ul>
+                <li>POST /desaparecidos → Criar desaparecido</li>
+                <li>GET /desaparecidos → Listar todos</li>
+                <li>GET /desaparecidos/:id → Buscar por ID do desaparecido</li>
+                <li>PUT /desaparecidos/:id → Atualizar dados</li>
+                <li>DELETE /desaparecidos/:id → Remover</li>
+            </ul>
+
+            <h3>👥 Solicitantes</h3>
+            <ul>
+                <li>POST /solicitantes → Criar solicitante</li>
+                <li>GET /solicitantes → Listar solicitantes</li>
+                <lis>GET /solicitantes/:id → Buscar por ID do solicitante</li>
+            </ul>
+
+            <h3>👀 Avistamentos</h3>
+            <ul>
+                <li>POST /avistamentos → Registrar avistamento</li>
+                <li>GET /avistamentos → Listar avistamentos</li>
+                <lis>GET /avistamentos/:id → Buscar por ID do avistamento</li>
+            </ul>
+
+            <h2>📎 Status da API</h2>
+            <p style="color: green;">✔ API funcionando corretamente</p>
         </body>
         `);
 });
-
-//Rota principal desaparecidos
 
 app.post("/desaparecidos", async (req, res) => {
     const {nome, idade, descricao, ultima_localizacao,
@@ -76,10 +104,6 @@ app.delete("/desaparecidos/:id", async (req, res) => {
     res.send(`Desaparecido foi deletado.`);
 });
 
-
-//==========================
-//Rota solicitantes
-
 app.post("/solicitantes", async (req, res) => {
     const {nome, telefone, email} = req.body;
 
@@ -96,13 +120,42 @@ app.get("/solicitantes", async (req, res) => {
             SELECT * FROM solicitantes
         `);
     res.json(listarSolicitantes);
-})
+});
 
-//========================
-// Rota casos
+app.get("/solicitantes/:id", async (req, res) => {
+    const {id} = req.params;
+    const solicitanteEspecifico = await db.get(`
+        SELECT * FROM solicitantes WHERE id = ?`,
+    [id],
+    );
+    res.json(solicitanteEspecifico);
+});
 
-//===================================
-//porta
+app.post("/avistamentos", async (req, res) => {
+    const {desaparecido_id,descricao,localizacao,data_avistamento,contato} = req.body;
+    await db.run(`
+        INSERT INTO avistamentos(desaparecido_id,descricao,localizacao,data_avistamento,contato) VALUES (?,?,?,?,?)
+        `, 
+    [desaparecido_id,descricao,localizacao,data_avistamento,contato],
+);
+res.send(`Adicionado um avistamento de um desaparecido`);
+});
+
+app.get("/avistamentos", async (req, res) => {
+    const listarAvistamentos = await db.all(`
+        SELECT * FROM avistamentos
+        `);
+        res.json(listarAvistamentos);
+});
+
+app.get("/avistamentos/:id", async (req, res) => {
+    const {id} = req.params;
+    const avistamentoEspecifico = await db.get(
+        `SELECT * FROM avistamentos WHERE id = ?`,
+        [id],
+    );
+    res.json(avistamentoEspecifico);
+});
 
 const PORT = 3000;
 

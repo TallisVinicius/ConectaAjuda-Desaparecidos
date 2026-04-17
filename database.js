@@ -29,16 +29,6 @@ const criarBanco = async () => {
         `);
 
     await db.exec(`
-        CREATE TABLE IF NOT EXISTS casos(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            desaparecido_id INTEGER,
-            solicitante_id INTEGER,
-            descricao_caso TEXT,
-            data_registro TEXT
-        )
-        `);
-
-    await db.exec(`
         CREATE TABLE IF NOT EXISTS avistamentos(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             desaparecido_id INTEGER,
