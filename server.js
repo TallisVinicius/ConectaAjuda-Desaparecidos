@@ -53,14 +53,14 @@ app.get("/", (req, res) => {
 });
 
 app.post("/desaparecidos", async (req, res) => {
-    const {nome_Desaparecido, idade, descricao, ultima_localizacao,
+    const {nome_desaparecido, idade, descricao, ultima_localizacao,
         data_desaparecimento} = req.body;
 
     await db.run(
-        `INSERT INTO desaparecidos(nome_Desaparecido, idade,
+        `INSERT INTO desaparecidos(nome_desaparecido, idade,
         descricao, ultima_localizacao,
         data_desaparecimento) VALUES (?, ?, ?, ?, ?)`,
-        [nome_Desaparecido, idade, descricao,
+        [nome_desaparecido, idade, descricao,
         ultima_localizacao,data_desaparecimento],
     );
 
@@ -87,12 +87,12 @@ app.get("/desaparecidos/:id", async (req, res) => {
 app.put("/desaparecidos/:id", async (req, res) => {
     const {id} = req.params;
 
-    const {nome_Desaparecido, descricao, status} = req.body;
+    const {nome_desaparecido, descricao, status} = req.body;
 
     await db.run(`
             UPDATE desaparecidos
-            SET nome_Desaparecido = ?, descricao = ?, status = ? WHERE id = ?`,
-        [nome_Desaparecido, descricao, status, id],
+            SET nome_desaparecido = ?, descricao = ?, status = ? WHERE id = ?`,
+        [nome_desaparecido, descricao, status, id],
         );
         res.send(`As informações do desaparecido foram atualizadas.`)
 });
@@ -108,11 +108,11 @@ app.delete("/desaparecidos/:id", async (req, res) => {
 });
 
 app.post("/solicitantes", async (req, res) => {
-    const {nome_Solicitante, telefone, email} = req.body;
+    const {nome_solicitante, telefone, email} = req.body;
 
     await db.run(`
-            INSERT INTO solicitantes(nome_Solicitante, telefone, email) VALUES (?, ?, ?)`,
-        [nome_Solicitante, telefone, email],
+            INSERT INTO solicitantes(nome_solicitante, telefone, email) VALUES (?, ?, ?)`,
+        [nome_solicitante, telefone, email],
         );
     res.send(`Solicitante com nome ${nome_Solicitante} registrou um desaparecimento`);
 });
@@ -135,11 +135,11 @@ app.get("/solicitantes/:id", async (req, res) => {
 });
 
 app.post("/avistamentos", async (req, res) => {
-    const {desaparecido_id,descricao,localizacao,data_avistamento,contato} = req.body;
+    const {descricao,localizacao,data_avistamento,contato} = req.body;
     await db.run(`
-        INSERT INTO avistamentos(desaparecido_id,descricao,localizacao,data_avistamento,contato) VALUES (?,?,?,?,?)
+        INSERT INTO avistamentos(descricao,localizacao,data_avistamento,contato) VALUES (?,?,?,?)
         `, 
-    [desaparecido_id,descricao,localizacao,data_avistamento,contato],
+    [descricao,localizacao,data_avistamento,contato],
 );
 res.send(`Adicionado um avistamento de um desaparecido`);
 });
