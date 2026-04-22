@@ -10,7 +10,7 @@ const criarBanco = async () => {
     await db.exec(`
         CREATE TABLE IF NOT EXISTS desaparecidos(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
+            nome_Desaparecido TEXT NOT NULL,
             idade INTEGER,
             descricao TEXT,
             ultima_localizacao TEXT,
@@ -22,7 +22,7 @@ const criarBanco = async () => {
     await db.exec(`
         CREATE TABLE IF NOT EXISTS solicitantes(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT,
+            nome_Solicitante TEXT,
             telefone TEXT,
             email TEXT
         )
