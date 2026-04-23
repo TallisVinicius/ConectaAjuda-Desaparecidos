@@ -36,14 +36,14 @@ app.get("/", (req, res) => {
             <ul>
                 <li>POST /solicitantes → Criar solicitante</li>
                 <li>GET /solicitantes → Listar solicitantes</li>
-                <lis>GET /solicitantes/:id → Buscar por ID do solicitante</li>
+                <li>GET /solicitantes/:id → Buscar por ID do solicitante</li>
             </ul>
 
             <h3>👀 Avistamentos</h3>
             <ul>
                 <li>POST /avistamentos → Registrar avistamento</li>
                 <li>GET /avistamentos → Listar avistamentos</li>
-                <lis>GET /avistamentos/:id → Buscar por ID do avistamento</li>
+                <li>GET /avistamentos/:id → Buscar por ID do avistamento</li>
             </ul>
 
             <h2>📎 Status da API</h2>
@@ -61,7 +61,7 @@ app.post("/desaparecidos", async (req, res) => {
         descricao, ultima_localizacao,
         data_desaparecimento) VALUES (?, ?, ?, ?, ?)`,
         [nome_desaparecido, idade, descricao,
-        ultima_localizacao,data_desaparecimento],
+        ultima_localizacao,data_desaparecimento]
     );
 
     res.send(`Adicionado um novo desaparecido a lista de busca`);
@@ -87,12 +87,12 @@ app.get("/desaparecidos/:id", async (req, res) => {
 app.put("/desaparecidos/:id", async (req, res) => {
     const {id} = req.params;
 
-    const {nome_desaparecido, descricao, status} = req.body;
+    const {nome_desaparecido, idade, descricao, ultima_localizacao, data_desaparecimento, status} = req.body;
 
     await db.run(`
             UPDATE desaparecidos
-            SET nome_desaparecido = ?, descricao = ?, status = ? WHERE id = ?`,
-        [nome_desaparecido, descricao, status, id],
+            SET nome_desaparecido = ?, idade = ?, descricao = ?,ultima_localizacao = ? ,data_desaparecimento = ? , status = ? WHERE id = ?`,
+        [nome_desaparecido,idade, descricao,ultima_localizacao,data_desaparecimento, status, id]
         );
         res.send(`As informações do desaparecido foram atualizadas.`)
 });
@@ -112,9 +112,9 @@ app.post("/solicitantes", async (req, res) => {
 
     await db.run(`
             INSERT INTO solicitantes(nome_solicitante, telefone, email) VALUES (?, ?, ?)`,
-        [nome_solicitante, telefone, email],
+        [nome_solicitante, telefone, email]
         );
-    res.send(`Solicitante com nome ${nome_Solicitante} registrou um desaparecimento`);
+    res.send(`Solicitante com nome ${nome_solicitante} registrou um desaparecimento`);
 });
 
 app.get("/solicitantes", async (req, res) => {
@@ -139,7 +139,7 @@ app.post("/avistamentos", async (req, res) => {
     await db.run(`
         INSERT INTO avistamentos(descricao,localizacao,data_avistamento,contato) VALUES (?,?,?,?)
         `, 
-    [descricao,localizacao,data_avistamento,contato],
+    [descricao,localizacao,data_avistamento,contato]
 );
 res.send(`Adicionado um avistamento de um desaparecido`);
 });
