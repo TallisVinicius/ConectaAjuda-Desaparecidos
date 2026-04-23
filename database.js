@@ -8,8 +8,6 @@ const criarBanco = async () => {
     driver: sqlite3.Database,
   });
 
-  await db.exec(`PRAGMA foreign_keys = ON;`);
-
   await db.exec(`
         CREATE TABLE IF NOT EXISTS desaparecidos(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
